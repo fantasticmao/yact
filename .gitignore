@@ -1,0 +1,9 @@
+.DS_Store
+
+yact.db
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr

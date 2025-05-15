@@ -1,0 +1,29 @@
+@startuml
+
+database "DuckDB" as duckdb
+
+package "pgwire" {
+    component "Message Handler" as msg_handler
+    component "Message Codec" as msg_codec
+    msg_handler - msg_codec
+}
+
+package "pgproto3" {
+    component "Backend Server" as backend_server
+    component "Connection Manager\n(Event Loop)" as conn_manager
+    backend_server - conn_manager
+}
+
+interface "Accept" as accept
+
+component "net.Listener" as listener
+
+duckdb --> msg_handler
+
+msg_handler --> conn_manager
+
+backend_server -left-> accept
+
+listener - accept
+
+@enduml
