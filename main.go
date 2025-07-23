@@ -2,40 +2,19 @@ package main
 
 import (
 	"database/sql"
-	"fmt"
-	"github.com/fantasticmao/yact/pgwire"
+	"github.com/fantasticmao/yact/app"
 	_ "github.com/marcboeker/go-duckdb/v2"
-	"net"
-	"os"
 )
 
 func main() {
-	listener, err := net.Listen("tcp", ":5432")
-	checkError(err)
-
-	db, err := sql.Open("duckdb", "yact.db")
+	db, err := sql.Open("duckdb", "test.db")
 	checkError(err)
 
 	err = db.Ping()
 	checkError(err)
 
-	for {
-		conn, err := listener.Accept()
-		checkError(err)
-		fmt.Printf("connection accepted, remote addr: %s\n", conn.RemoteAddr())
-
-		s := pgwire.NewServer(conn, db)
-		go func(_conn net.Conn) {
-			err := s.Run()
-			if err != nil {
-				_, _ = fmt.Fprintln(os.Stderr, err.Error())
-			}
-
-			_conn.Close()
-			fmt.Printf("connection closed, remote addr: %s\n", conn.RemoteAddr())
-
-		}(conn)
-	}
+	err = app.StartUpDuckPg(":5432", db)
+	checkError(err)
 }
 
 func checkError(err error) {

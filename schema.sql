@@ -1,5 +1,5 @@
-CREATE TABLE traffic (
-  up        INTEGER,
-  down      INTEGER,
-  timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+CREATE TABLE clash_traffic (
+  upload   BIGINT,
+  download BIGINT,
+  event_time DEFAULT CURRENT_TIMESTAMP
 );

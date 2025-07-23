@@ -1,6 +1,7 @@
 .DS_Store
 
-yact.db
+test.db
+test.db.wal
 
 ### IntelliJ IDEA ###
 .idea

@@ -1,6 +1,20 @@
 @startuml
 
+component "Clash" as clash
+
+interface "profile.tracing" as tracing
+
+clash - tracing
+
+package "store" {
+    component "Repository" as repository
+}
+
+tracing -> repository
+
 database "DuckDB" as duckdb
+
+repository --> duckdb
 
 package "pgwire" {
     component "Message Handler" as msg_handler
@@ -10,7 +24,7 @@ package "pgwire" {
 
 package "pgproto3" {
     component "Backend Server" as backend_server
-    component "Connection Manager\n(Event Loop)" as conn_manager
+    component "Connection Manager" as conn_manager
     backend_server - conn_manager
 }
 
