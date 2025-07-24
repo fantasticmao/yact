@@ -5,33 +5,41 @@ import (
 	"github.com/coder/websocket"
 )
 
-type WebsocketConn struct {
-	url string
+type WebsocketClient struct {
+	conn *websocket.Conn
 }
 
-func NewWebsocketConn(url string) (*WebsocketConn, error) {
-	return &WebsocketConn{
-		url: url,
+func DialWebsocket(ctx context.Context, url string) (*WebsocketClient, error) {
+	// TODO support auto reconnect when connection is closed
+	conn, _, err := websocket.Dial(ctx, url, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return &WebsocketClient{
+		conn: conn,
 	}, nil
 }
 
-func (wsConn *WebsocketConn) Run(ctx context.Context, callback func([]byte)) error {
-	conn, _, err := websocket.Dial(ctx, wsConn.url, nil)
-	if err != nil {
-		return err
-	}
-	defer conn.CloseNow()
+func (wsClient *WebsocketClient) Run(ctx context.Context, queue chan string) {
+	go wsClient.receiveMessage(ctx, queue)
+}
 
+func (wsClient *WebsocketClient) receiveMessage(ctx context.Context, queue chan string) {
 	for {
-		msgType, data, err := conn.Read(ctx)
+		msgType, msg, err := wsClient.conn.Read(ctx)
 		if err != nil {
-			return err
+			Error("websocket read message error: %v\n", err)
 		}
 
-		if msgType == websocket.MessageBinary {
-			continue
+		if msgType == websocket.MessageText {
+			queue <- string(msg)
+		} else {
+			Error("websocket received non-text message: %d\n", msgType)
 		}
-
-		callback(data)
 	}
+}
+
+func (wsClient *WebsocketClient) Close() error {
+	return wsClient.conn.CloseNow()
 }

@@ -20,8 +20,12 @@ github.com/duckdb/duckdb-go-bindings/linux-arm64 v0.1.12 h1:YGSR7AFLw2gJ7IbgLE6D
 github.com/duckdb/duckdb-go-bindings/linux-arm64 v0.1.12/go.mod h1:o7crKMpT2eOIi5/FY6HPqaXcvieeLSqdXXaXbruGX7w=
 github.com/duckdb/duckdb-go-bindings/windows-amd64 v0.1.12 h1:2aduW6fnFnT2Q45PlIgHbatsPOxV9WSZ5B2HzFfxaxA=
 github.com/duckdb/duckdb-go-bindings/windows-amd64 v0.1.12/go.mod h1:IlOhJdVKUJCAPj3QsDszUo8DVdvp1nBFp4TUJVdw99s=
-github.com/fantasticmao/go-duckpg v0.0.0-20250722163429-0e5b6f166975 h1:5neu/b6UlvgR4w1yJNTehkDUSJhBwPnj7jzKn/WbjSo=
-github.com/fantasticmao/go-duckpg v0.0.0-20250722163429-0e5b6f166975/go.mod h1:40ERytP3Eq9nY8J3G/U0B9kSdMz3oyHGT329c25gsg0=
+github.com/fantasticmao/go-duckpg v0.0.0-20250724121043-c07f9d55adeb h1:cSJpMpl7FtwEyQfBOX9I9IyvIf9O45mkNYhiWZwUK58=
+github.com/fantasticmao/go-duckpg v0.0.0-20250724121043-c07f9d55adeb/go.mod h1:40ERytP3Eq9nY8J3G/U0B9kSdMz3oyHGT329c25gsg0=
+github.com/fantasticmao/go-duckpg v0.0.0-20250724161949-a8a9b753fb28 h1:hRAXXJZp6vkVDWcuX5UFw9flXX4EYbqRWmnfdSbu4M4=
+github.com/fantasticmao/go-duckpg v0.0.0-20250724161949-a8a9b753fb28/go.mod h1:40ERytP3Eq9nY8J3G/U0B9kSdMz3oyHGT329c25gsg0=
+github.com/fantasticmao/go-duckpg v0.0.0-20250724165237-04178e5ad871 h1:Z/GeJ8U6nukHrc2bx1FtXn5MUurwD4BTj3MGe+n1N8g=
+github.com/fantasticmao/go-duckpg v0.0.0-20250724165237-04178e5ad871/go.mod h1:40ERytP3Eq9nY8J3G/U0B9kSdMz3oyHGT329c25gsg0=
 github.com/go-viper/mapstructure/v2 v2.2.1 h1:ZAaOCxANMuZx5RCeg0mBdEZk7DZasvvZIxtHqx8aGss=
 github.com/go-viper/mapstructure/v2 v2.2.1/go.mod h1:oJDH3BJKyqBA2TXFhDsKDGDTlndYOZ6rGS0BRZIxGhM=
 github.com/goccy/go-json v0.10.5 h1:Fq85nIqj+gXn/S5ahsiTlK3TmC85qgirsdTP/+DeaC4=

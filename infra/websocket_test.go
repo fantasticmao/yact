@@ -2,18 +2,26 @@ package infra
 
 import (
 	"context"
-	"fmt"
 	"github.com/zeebo/assert"
+	"os"
+	"os/signal"
 	"testing"
 )
 
 func TestAutoReConnClient_Run(t *testing.T) {
-	client, err := NewWebsocketConn("ws://127.0.0.1:9090/traffic")
-	//client, err := NewWebsocketConn("ws://127.0.0.1:9090/profile/app")
+	wsClient, err := DialWebsocket(context.Background(), "ws://127.0.0.1:9090/traffic")
 	assert.Nil(t, err)
 
-	err = client.Run(context.Background(), func(data []byte) {
-		fmt.Println(string(data))
-	})
-	assert.Nil(t, err)
+	queue := make(chan string, 100)
+	wsClient.Run(context.Background(), queue)
+
+	go func() {
+		for msg := range queue {
+			Info("Received message: %s", msg)
+		}
+	}()
+
+	stop := make(chan os.Signal, 1)
+	signal.Notify(stop, os.Interrupt, os.Kill)
+	<-stop
 }

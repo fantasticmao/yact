@@ -1,4 +1,11 @@
-package app
+package clash
+
+type EventType int
+
+const (
+	EventTraffic EventType = 1 << iota
+	EventTracing
+)
 
 type Traffic struct {
 	Up   int64 `json:"up"`
@@ -19,12 +26,6 @@ type Metadata struct {
 	DstPort string `json:"destinationPort"`
 	Host    string `json:"host"`
 	DNSMode string `json:"dnsMode"`
-}
-
-type ClashEvent interface {
-	Write() error
-
-	Flush() error
 }
 
 type EventRuleMatch struct {
