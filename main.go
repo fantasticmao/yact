@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	db, err := sql.Open("duckdb", "test.db")
+	db, err := sql.Open("duckdb", "yact.db")
 	checkError(err)
 
 	err = db.Ping()

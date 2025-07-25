@@ -21,11 +21,11 @@ func DialWebsocket(ctx context.Context, url string) (*WebsocketClient, error) {
 	}, nil
 }
 
-func (wsClient *WebsocketClient) Run(ctx context.Context, queue chan string) {
+func (wsClient *WebsocketClient) Run(ctx context.Context, queue chan []byte) {
 	go wsClient.receiveMessage(ctx, queue)
 }
 
-func (wsClient *WebsocketClient) receiveMessage(ctx context.Context, queue chan string) {
+func (wsClient *WebsocketClient) receiveMessage(ctx context.Context, queue chan []byte) {
 	for {
 		msgType, msg, err := wsClient.conn.Read(ctx)
 		if err != nil {
@@ -33,7 +33,7 @@ func (wsClient *WebsocketClient) receiveMessage(ctx context.Context, queue chan 
 		}
 
 		if msgType == websocket.MessageText {
-			queue <- string(msg)
+			queue <- msg
 		} else {
 			Error("websocket received non-text message: %d\n", msgType)
 		}
