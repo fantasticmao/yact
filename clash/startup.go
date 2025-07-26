@@ -61,7 +61,10 @@ func handleTrafficMessage(msg []byte) error {
 	if err := json.Unmarshal(msg, traffic); err != nil {
 		return err
 	}
-	//infra.Info("type: traffic, Up: %d, Down: %d", traffic.Up, traffic.Down)
+	if traffic.Up == 0 && traffic.Down == 0 {
+		// traffic message will not be handled when up and down are both zero
+		return nil
+	}
 	return insertEventTraffic(traffic)
 }
 
