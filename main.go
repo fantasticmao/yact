@@ -13,11 +13,11 @@ func main() {
 	err = db.Ping()
 	checkError(err)
 
-	clashUrls := map[clash.EventType]string{
-		clash.EventTraffic: "ws://127.0.0.1:9090/traffic",
-		clash.EventTracing: "ws://127.0.0.1:9090/profile/tracing",
+	tracingUrls := map[clash.EventMode]string{
+		clash.EventModeTraffic: "ws://192.168.0.1:9090/traffic",
+		clash.EventModeTracing: "ws://192.168.0.1:9090/profile/tracing",
 	}
-	errs := clash.StartupTracing(db, clashUrls)
+	errs := clash.Startup(db, tracingUrls)
 	checkError(errs...)
 
 	err = duckpg.Startup(db, ":5432")

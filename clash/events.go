@@ -1,23 +1,31 @@
 package clash
 
-type EventType int
+type EventMode int
 
 const (
-	EventTraffic EventType = 1 << iota
-	EventTracing
+	EventModeTraffic EventMode = 1 << iota
+	EventModeTracing
 )
 
-type Traffic struct {
+type EventTraffic struct {
 	Up   int64 `json:"up"`
 	Down int64 `json:"down"`
 }
 
-type Basic struct {
-	ID   string `json:"id"`
-	Type string `json:"type"`
+const (
+	EventTypeRuleMatch  string = "RuleMatch"
+	EventTypeProxyDial  string = "ProxyDial"
+	EventTypeDNSRequest string = "DNSRequest"
+)
+
+type EventBasic struct {
+	ID       string `json:"id"`
+	Type     string `json:"type"`
+	Duration int64  `json:"duration"`
+	Error    string `json:"error"`
 }
 
-type Metadata struct {
+type EventMetadata struct {
 	NetWork string `json:"network"`
 	Type    string `json:"type"`
 	SrcIP   string `json:"sourceIP"`
@@ -25,35 +33,30 @@ type Metadata struct {
 	SrcPort string `json:"sourcePort"`
 	DstPort string `json:"destinationPort"`
 	Host    string `json:"host"`
-	DNSMode string `json:"dnsMode"`
+	DnsMode string `json:"dnsMode"`
 }
 
 type EventRuleMatch struct {
-	Basic
-	Duration int64    `json:"duration"`
-	Proxy    string   `json:"proxy"`
-	Rule     string   `json:"rule"`
-	Payload  string   `json:"payload"`
-	Error    string   `json:"error"`
-	Metadata Metadata `json:"metadata"`
+	EventBasic
+	Proxy    string        `json:"proxy"`
+	Rule     string        `json:"rule"`
+	Payload  string        `json:"payload"`
+	Metadata EventMetadata `json:"metadata"`
 }
 
 type EventProxyDial struct {
-	Basic
-	Duration int64    `json:"duration"`
-	Proxy    string   `json:"proxy"`
-	Chain    []string `json:"chain"`
-	Error    string   `json:"error"`
-	Address  string   `json:"address"`
-	Host     string   `json:"host"`
+	EventBasic
+	Proxy   string   `json:"proxy"`
+	Chain   []string `json:"chain"`
+	Address string   `json:"address"`
+	Host    string   `json:"host"`
 }
 
-type EventDNSRequest struct {
-	Basic
-	Duration int64    `json:"duration"`
-	Name     string   `json:"name"`
-	Answer   []string `json:"answer"`
-	Error    string   `json:"error"`
-	QType    string   `json:"qType"`
-	DNSType  string   `json:"dnsType"`
+type EventDnsRequest struct {
+	EventBasic
+	DndType string   `json:"dnsType"`
+	Name    string   `json:"name"`
+	QType   string   `json:"qType"`
+	Answer  []string `json:"answer"`
+	Source  string   `json:"source"`
 }

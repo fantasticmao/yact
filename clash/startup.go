@@ -7,13 +7,13 @@ import (
 	"github.com/fantasticmao/yact/infra"
 )
 
-func StartupTracing(duckdb *sql.DB, urls map[EventType]string) []error {
+func Startup(duckdb *sql.DB, urls map[EventMode]string) []error {
 	initDatabase(duckdb)
 
 	errCh := make(chan error, len(urls))
-	for typo, url := range urls {
+	for mode, url := range urls {
 		go func() {
-			err := startTracing(typo, url)
+			err := startTracing(mode, url)
 			errCh <- err
 		}()
 	}
@@ -25,7 +25,7 @@ func StartupTracing(duckdb *sql.DB, urls map[EventType]string) []error {
 	return errs
 }
 
-func startTracing(typo EventType, url string) error {
+func startTracing(mode EventMode, url string) error {
 	wsClient, err := infra.DialWebsocket(context.Background(), url)
 	if err != nil {
 		return err
@@ -36,7 +36,7 @@ func startTracing(typo EventType, url string) error {
 
 	go func() {
 		for msg := range msgQueue {
-			err := handleMessage(typo, msg)
+			err := handleMessage(mode, msg)
 			if err != nil {
 				infra.Error("handleMessage error: %v\n", err)
 			}
@@ -45,11 +45,11 @@ func startTracing(typo EventType, url string) error {
 	return nil
 }
 
-func handleMessage(typo EventType, msg []byte) error {
-	switch typo {
-	case EventTraffic:
+func handleMessage(mode EventMode, msg []byte) error {
+	switch mode {
+	case EventModeTraffic:
 		return handleTrafficMessage(msg)
-	case EventTracing:
+	case EventModeTracing:
 		return handleTracingMessage(msg)
 	default:
 		return nil
@@ -57,15 +57,41 @@ func handleMessage(typo EventType, msg []byte) error {
 }
 
 func handleTrafficMessage(msg []byte) error {
-	traffic := &Traffic{}
+	traffic := &EventTraffic{}
 	if err := json.Unmarshal(msg, traffic); err != nil {
 		return err
 	}
 	//infra.Info("type: traffic, Up: %d, Down: %d", traffic.Up, traffic.Down)
-	return saveEventTraffic(traffic)
+	return insertEventTraffic(traffic)
 }
 
 func handleTracingMessage(msg []byte) error {
-	infra.Info("type: tracing, msg: %s", string(msg))
-	return nil
+	basic := &EventBasic{}
+	if err := json.Unmarshal(msg, basic); err != nil {
+		return err
+	}
+
+	switch basic.Type {
+	case EventTypeRuleMatch:
+		ruleMatch := &EventRuleMatch{}
+		if err := json.Unmarshal(msg, ruleMatch); err != nil {
+			return err
+		}
+		return insertEventRuleMatch(ruleMatch)
+	case EventTypeProxyDial:
+		proxyDial := &EventProxyDial{}
+		if err := json.Unmarshal(msg, proxyDial); err != nil {
+			return err
+		}
+		return insertEventProxyDial(proxyDial)
+	case EventTypeDNSRequest:
+		dnsRequest := &EventDnsRequest{}
+		if err := json.Unmarshal(msg, dnsRequest); err != nil {
+			return err
+		}
+		return insertEventDnsRequest(dnsRequest)
+	default:
+		infra.Error("unknown clash tracing event, type: %s\n", basic.Type)
+		return nil
+	}
 }
