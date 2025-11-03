@@ -1,8 +1,7 @@
 CREATE TABLE clash_traffic (
   up        BIGINT,
   down      BIGINT,
-  timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  pt        DATE      DEFAULT CURRENT_DATE
+  timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE clash_rule_match (
@@ -14,8 +13,7 @@ CREATE TABLE clash_rule_match (
   rule      VARCHAR,
   payload   VARCHAR,
   metadata  JSON,
-  timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  pt        DATE      DEFAULT CURRENT_DATE
+  timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE clash_proxy_dial (
@@ -27,8 +25,7 @@ CREATE TABLE clash_proxy_dial (
   chain     JSON,
   address   VARCHAR,
   host      VARCHAR,
-  timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  pt        DATE      DEFAULT CURRENT_DATE
+  timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE clash_dns_request (
@@ -41,6 +38,5 @@ CREATE TABLE clash_dns_request (
   qType     VARCHAR,
   answer    JSON,
   source    VARCHAR,
-  timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  pt        DATE      DEFAULT CURRENT_DATE
+  timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

@@ -38,7 +38,7 @@ func startTracing(mode EventMode, url string) error {
 		for msg := range msgQueue {
 			err := handleMessage(mode, msg)
 			if err != nil {
-				infra.Error("handleMessage error: %v\n", err)
+				infra.Error("handleMessage error: %w\n", err)
 			}
 		}
 	}()

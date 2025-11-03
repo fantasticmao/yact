@@ -3,8 +3,8 @@ package clash
 import (
 	"database/sql"
 	"encoding/json"
+	_ "github.com/duckdb/duckdb-go/v2"
 	"github.com/fantasticmao/yact/infra"
-	_ "github.com/marcboeker/go-duckdb/v2"
 	"sync"
 )
 

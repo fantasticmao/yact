@@ -14,8 +14,8 @@ func main() {
 	checkError(err)
 
 	tracingUrls := map[clash.EventMode]string{
-		clash.EventModeTraffic: "ws://192.168.0.1:9090/traffic",
-		clash.EventModeTracing: "ws://192.168.0.1:9090/profile/tracing",
+		clash.EventModeTraffic: "ws://127.0.0.1:9090/traffic",
+		clash.EventModeTracing: "ws://127.0.0.1:9090/profile/tracing",
 	}
 	errs := clash.Startup(db, tracingUrls)
 	checkError(errs...)

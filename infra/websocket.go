@@ -29,7 +29,7 @@ func (wsClient *WebsocketClient) receiveMessage(ctx context.Context, queue chan 
 	for {
 		msgType, msg, err := wsClient.conn.Read(ctx)
 		if err != nil {
-			Error("websocket read message error: %v\n", err)
+			Error("websocket read message error: %w\n", err)
 		}
 
 		if msgType == websocket.MessageText {
