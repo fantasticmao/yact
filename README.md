@@ -39,18 +39,19 @@ websocat -v ws://127.0.0.1:9090/profile/tracing
 
 Dreamacro Clash Tracing
 
-```
-Clash -> WebSocat -> Vector -> Loki -> Grafana
+```mermaid
+flowchart TB
+  Clash -- WebSocket listen --> Vector --> Loki[(Loki)]
+  Grafana --> Loki[(Loki)]
 ```
 
 Yet Another Clash Tracing
 
-```
-1. Clash -> yact -> Parquet Files
-
-2. Parquet Files -[1h]-> yact -> DuckDB
-
-3. DuckDB -[read_only]-> yact -[pgproto3]-> Grafana
+```mermaid
+flowchart TB
+  Clash -- WebSocket listen --> yact --> DuckDB[(DuckDB)]
+  DuckDB --> yact
+  Grafana -- PostgreSQL connect --> yact
 ```
 
 ## 部署安装
