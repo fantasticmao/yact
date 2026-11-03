@@ -2,6 +2,7 @@ package main
 
 import (
 	"database/sql"
+
 	"github.com/fantasticmao/go-duckpg/duckpg"
 	"github.com/fantasticmao/yact/clash"
 )
@@ -20,7 +21,7 @@ func main() {
 	errs := clash.Startup(db, tracingUrls)
 	checkError(errs...)
 
-	err = duckpg.Startup(db, ":5432")
+	err = duckpg.Listen(db, ":5432", duckpg.Config{})
 	checkError(err)
 }
 
