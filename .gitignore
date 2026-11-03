@@ -1,5 +1,8 @@
 .DS_Store
 
+bin/
+coverage.txt
+
 *.db
 *.db.wal
 
